@@ -1,0 +1,4 @@
+Diagrama Relacional, 
+Codificação em SQL,
+Popular cada tabela com 10 dados de forma não aleatória,
+Editar o relatório
