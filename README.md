@@ -14,6 +14,17 @@ Antes de iniciar, certifique-se de que as seguintes ferramentas estão instalada
 
 ---
 
+## Dependências obrigatórias
+
+Para garantir que o projeto funcione corretamente, você deve ter:
+
+- **Python 3.6 ou superior**
+- **pip** para instalação de pacotes Python
+- **Git** caso precise clonar o repositório
+- **Todas as bibliotecas listadas em `requirements.txt`** para que todas as funcionalidades da aplicação sejam executadas corretamente.
+
+---
+
 ## Instruções para Windows
 
 1. **Instale o Python 3.6+**:
@@ -91,12 +102,3 @@ Antes de iniciar, certifique-se de que as seguintes ferramentas estão instalada
    - Revise o código no arquivo `./main.py` e faça os testes necessários para garantir que a aplicação funcione como esperado.
 
 ---
-
-## Dependências obrigatórias
-
-Para garantir que o projeto funcione corretamente, você deve ter:
-
-- **Python 3.6 ou superior**
-- **pip** para instalação de pacotes Python
-- **Git** caso precise clonar o repositório
-- **Todas as bibliotecas listadas em `requirements.txt`** para que todas as funcionalidades da aplicação sejam executadas corretamente.
