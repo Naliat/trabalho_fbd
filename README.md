@@ -1,3 +1,5 @@
+**Em casos de problemas ou dúvidas entrar em contato com -> tailansouzzdev@gmail.com**
+
 # Configuração do Ambiente
 
 Este guia fornece instruções detalhadas para configurar e executar o projeto em ambientes Windows e Linux.
