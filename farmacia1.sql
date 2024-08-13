@@ -1,7 +1,7 @@
 CREATE SCHEMA farmacia;
 SET SCHEMA 'farmacia';
 
--- Tabela Remédio
+-- Tabela Remedio
 CREATE TABLE remedio (
     id_remedio SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
