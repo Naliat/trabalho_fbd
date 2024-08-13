@@ -11,8 +11,7 @@ Antes de iniciar, certifique-se de que as seguintes ferramentas estão instalada
 - **Python 3.6+**: Para executar o projeto. [Download Python](https://www.python.org/downloads/).
 - **pip**: O gerenciador de pacotes do Python. Geralmente, ele vem instalado com o Python.
 - **Git**: Para clonar o repositório do projeto, se necessário. [Download Git](https://git-scm.com/downloads).
-
----
+- **PostgreSQL**: Banco de dados necessário para o projeto. [Download PostgreSQL](https://www.postgresql.org/download/).
 
 ## Dependências obrigatórias
 
@@ -21,9 +20,8 @@ Para garantir que o projeto funcione corretamente, você deve ter:
 - **Python 3.6 ou superior**
 - **pip** para instalação de pacotes Python
 - **Git** caso precise clonar o repositório
+- **PostgreSQL** para gerenciamento do banco de dados
 - **Todas as bibliotecas listadas em `requirements.txt`** para que todas as funcionalidades da aplicação sejam executadas corretamente.
-
----
 
 ## Instruções para Windows
 
@@ -54,16 +52,26 @@ Para garantir que o projeto funcione corretamente, você deve ter:
      pip install -r requirements.txt
      ```
 
-6. **Execute a aplicação**:
+6. **Instale o PostgreSQL**:
+   - Baixe e instale o PostgreSQL para Windows a partir do [site oficial](https://www.postgresql.org/download/windows/). Siga as instruções de instalação e configure um banco de dados para o projeto.
+
+7. **Configure o banco de dados**:
+   - Após a instalação, use o `pgAdmin` ou o terminal para criar um banco de dados e um usuário com permissões apropriadas. Por exemplo, no terminal, você pode usar:
+     ```bash
+     psql -U postgres
+     CREATE DATABASE nome_do_banco;
+     CREATE USER nome_do_usuario WITH ENCRYPTED PASSWORD 'sua_senha';
+     GRANT ALL PRIVILEGES ON DATABASE nome_do_banco TO nome_do_usuario;
+     ```
+
+8. **Execute a aplicação**:
    - Agora, você pode executar a aplicação utilizando:
      ```bash
      python ./main.py
      ```
 
-7. **Verifique e teste a aplicação**:
+9. **Verifique e teste a aplicação**:
    - Revise o código no arquivo `./main.py` e teste as funcionalidades para garantir que tudo esteja funcionando corretamente.
-
----
 
 ## Instruções para Linux
 
@@ -92,13 +100,26 @@ Para garantir que o projeto funcione corretamente, você deve ter:
      pip install -r requirements.txt
      ```
 
-5. **Execute a aplicação**:
+5. **Instale o PostgreSQL**:
+   - Instale o PostgreSQL no Linux usando o gerenciador de pacotes:
+     ```bash
+     sudo apt-get install postgresql postgresql-contrib
+     ```
+
+6. **Configure o banco de dados**:
+   - Após a instalação, configure um banco de dados e um usuário com permissões apropriadas. Por exemplo, no terminal, você pode usar:
+     ```bash
+     sudo -u postgres psql
+     CREATE DATABASE nome_do_banco;
+     CREATE USER nome_do_usuario WITH ENCRYPTED PASSWORD 'sua_senha';
+     GRANT ALL PRIVILEGES ON DATABASE nome_do_banco TO nome_do_usuario;
+     ```
+
+7. **Execute a aplicação**:
    - Rode a aplicação com o comando:
      ```bash
      python3 ./main.py
      ```
 
-6. **Verifique e teste a aplicação**:
+8. **Verifique e teste a aplicação**:
    - Revise o código no arquivo `./main.py` e faça os testes necessários para garantir que a aplicação funcione como esperado.
-
----
