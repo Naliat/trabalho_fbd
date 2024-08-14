@@ -165,7 +165,7 @@ CREATE TABLE faz_parte (
     FOREIGN KEY (id_remedio) REFERENCES remedio (id_remedio)
 );
 
--- Tabela relacional entre histórico e cliente
+-- Tabela relacional entre histórico e cliente.
 
 CREATE TABLE tem (
     id_historico INTEGER NOT NULL,
