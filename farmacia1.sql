@@ -1,228 +1,220 @@
-CREATE SCHEMA farmacia;
-SET SCHEMA 'farmacia';
-
 -- Tabela Remédio
-CREATE TABLE remedio (
-    id_remedio SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao VARCHAR(255) NOT NULL,
-    tipo_remedio VARCHAR(50) CHECK (tipo_remedio IN ('Genérico', 'De Marca')),
-    cores_tarjas VARCHAR(50)
-);
+INSERT INTO remedio (nome, descricao) VALUES
+('Paracetamol', 'Analgésico e antipirético'),
+('Ibuprofeno', 'Anti-inflamatório e analgésico'),
+('Amoxicilina', 'Antibiótico de amplo espectro'),
+('Dipirona', 'Analgésico e antipirético'),
+('Loratadina', 'Antialérgico'),
+('Omeprazol', 'Inibidor de ácido gástrico'),
+('Simeticona', 'Antiflatulento'),
+('Clonazepam', 'Ansiolítico'),
+('Metformina', 'Antidiabético oral'),
+('Losartana', 'Antihipertensivo');
 
--- Tabela Pedido
-CREATE TABLE pedido (
-    id_pedido SERIAL PRIMARY KEY,
-    cod_rastr VARCHAR(50) UNIQUE,
-    status_pedido VARCHAR(50) NOT NULL CHECK (status_pedido IN ('EM PRODUÇÃO', 'A CAMINHO', 'ENTREGUE')),
-    data_pedido DATE NOT NULL,
-    qtd_rem_solic INTEGER NOT NULL
-);
+-- Tabela Genéricos
+INSERT INTO genericos (id_remedio) VALUES
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10);
 
--- Tabela Relacionamento Pedido e Remédio
-CREATE TABLE esta_incluido (
-    id_remedio INTEGER NOT NULL,
-    id_pedido INTEGER NOT NULL,
-    PRIMARY KEY (id_remedio, id_pedido),
-    FOREIGN KEY (id_remedio) REFERENCES remedio (id_remedio),
-    FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
-);
+-- Tabela Tarjas
+INSERT INTO tarjas (id_remedio, cores_tarjas) VALUES
+(1, 'Vermelha'),
+(2, 'Vermelha'),
+(3, 'Vermelha'),
+(4, 'Vermelha'),
+(5, 'Amarela'),
+(6, 'Vermelha'),
+(7, 'Amarela'),
+(8, 'Preta'),
+(9, 'Amarela'),
+(10, 'Vermelha');
+
+-- Tabela de Marcas
+INSERT INTO de_marcas (id_remedio) VALUES
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10);
+
+-- Tabela Pedidos
+INSERT INTO pedido (cod_rastr, status_pedido, data_pedido, qtd_rem_solic) VALUES
+('RAST123456', 'EM PRODUÇÃO', '2024-08-01', 100),
+('RAST123457', 'A CAMINHO', '2024-08-02', 200),
+('RAST123458', 'ENTREGUE', '2024-08-03', 150),
+('RAST123459', 'ENTREGUE', '2024-08-04', 120),
+('RAST123460', 'A CAMINHO', '2024-08-05', 300),
+('RAST123461', 'EM PRODUÇÃO', '2024-08-06', 90),
+('RAST123462', 'A CAMINHO', '2024-08-07', 80),
+('RAST123463', 'ENTREGUE', '2024-08-08', 250),
+('RAST123464', 'EM PRODUÇÃO', '2024-08-09', 130),
+('RAST123465', 'ENTREGUE', '2024-08-10', 110);
+
+-- Tabela Relacional entre Remédio e Pedido
+INSERT INTO esta_incluido (id_remedio, id_pedido) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
 -- Tabela Fornecedor
-CREATE TABLE fornecedor (
-    id_fornecedor SERIAL PRIMARY KEY,
-    nome_empresa VARCHAR(255) UNIQUE NOT NULL,
-    cnpj VARCHAR(14) UNIQUE NOT NULL,
-    email VARCHAR(255),
-    endereco_rua VARCHAR(255),
-    endereco_numero INTEGER,
-    endereco_bairro VARCHAR(255),
-    endereco_cidade VARCHAR(255),
-    endereco_estado CHAR(2)
-);
+INSERT INTO fornecedor (nome_empresa, cnpj, email, endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado) VALUES
+('Fornecedor A', '12345678000101', 'fornecedorA@example.com', 'Rua A', 100, 'Centro', 'São Paulo', 'SP'),
+('Fornecedor B', '12345678000201', 'fornecedorB@example.com', 'Rua B', 200, 'Centro', 'Rio de Janeiro', 'RJ'),
+('Fornecedor C', '12345678000301', 'fornecedorC@example.com', 'Rua C', 300, 'Centro', 'Belo Horizonte', 'MG'),
+('Fornecedor D', '12345678000401', 'fornecedorD@example.com', 'Rua D', 400, 'Centro', 'Curitiba', 'PR'),
+('Fornecedor E', '12345678000501', 'fornecedorE@example.com', 'Rua E', 500, 'Centro', 'Porto Alegre', 'RS'),
+('Fornecedor F', '12345678000601', 'fornecedorF@example.com', 'Rua F', 600, 'Centro', 'Salvador', 'BA'),
+('Fornecedor G', '12345678000701', 'fornecedorG@example.com', 'Rua G', 700, 'Centro', 'Fortaleza', 'CE'),
+('Fornecedor H', '12345678000801', 'fornecedorH@example.com', 'Rua H', 800, 'Centro', 'Recife', 'PE'),
+('Fornecedor I', '12345678000901', 'fornecedorI@example.com', 'Rua I', 900, 'Centro', 'Manaus', 'AM'),
+('Fornecedor J', '12345678001001', 'fornecedorJ@example.com', 'Rua J', 1000, 'Centro', 'Brasília', 'DF');
 
--- Relacionamento Pedido e Fornecedor
-CREATE TABLE solicitacao (
-    id_pedido INTEGER NOT NULL,
-    id_fornecedor INTEGER NOT NULL,
-    PRIMARY KEY (id_pedido, id_fornecedor),
-    FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido),
-    FOREIGN KEY (id_fornecedor) REFERENCES fornecedor (id_fornecedor)
-);
+-- Tabela Relacional entre Pedido e Fornecedor
+INSERT INTO solicitacao (id_pedido, id_fornecedor) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
--- Tabela Funcionario
-CREATE TABLE funcionario (
-    id_funcionario SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    cargo VARCHAR(255) NOT NULL,
-    salario NUMERIC(10, 2) NOT NULL
-);
+-- Tabela Funcionário
+INSERT INTO funcionario (nome, cargo, salario) VALUES
+('João Silva', 'Farmacêutico', 3000.00),
+('Maria Santos', 'Atendente', 2000.00),
+('Pedro Oliveira', 'Caixa', 1800.00),
+('Ana Pereira', 'Estoquista', 2500.00),
+('Lucas Souza', 'Gerente', 4000.00),
+('Fernanda Lima', 'Auxiliar', 1500.00),
+('Ricardo Almeida', 'Técnico', 3200.00),
+('Carla Ferreira', 'Atendente', 2000.00),
+('Bruno Costa', 'Auxiliar', 1500.00),
+('Juliana Cardoso', 'Farmacêutica', 3000.00);
 
--- Relacionamento Funcionario e Pedido
-CREATE TABLE realiza (
-    id_funcionario INTEGER NOT NULL,
-    id_pedido INTEGER NOT NULL,
-    PRIMARY KEY (id_funcionario, id_pedido),
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario (id_funcionario),
-    FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
-);
+-- Tabela Relacional entre Funcionário e Pedido
+INSERT INTO realiza (id_funcionario, id_pedido) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
 -- Tabela Estoque
-CREATE TABLE estoque (
-    id_estoque SERIAL PRIMARY KEY,
-    data_entrega_stq DATE,
-    qtd_stq INTEGER NOT NULL,
-    data_vali_stq DATE NOT NULL,
-    unidade_medida VARCHAR(50) NOT NULL
-);
+INSERT INTO estoque (data_entrega_stq, qtd_stq, data_vali_stq, medida_frascos, medida_caixas, medida_cartelas, medida_unidade) VALUES
+('2024-08-15', 500, '2025-08-15', 100, 50, 25, 325),
+('2024-08-16', 600, '2025-08-16', 150, 60, 30, 360),
+('2024-08-17', 700, '2025-08-17', 200, 70, 35, 395),
+('2024-08-18', 800, '2025-08-18', 250, 80, 40, 430),
+('2024-08-19', 900, '2025-08-19', 300, 90, 45, 465),
+('2024-08-20', 1000, '2025-08-20', 350, 100, 50, 500),
+('2024-08-21', 1100, '2025-08-21', 400, 110, 55, 535),
+('2024-08-22', 1200, '2025-08-22', 450, 120, 60, 570),
+('2024-08-23', 1300, '2025-08-23', 500, 130, 65, 605),
+('2024-08-24', 1400, '2025-08-24', 550, 140, 70, 640);
 
--- Relacionamento Estoque e Remédio
-CREATE TABLE possui (
-    id_estoque INTEGER NOT NULL,
-    id_remedio INTEGER NOT NULL,
-    PRIMARY KEY (id_estoque, id_remedio),
-    FOREIGN KEY (id_estoque) REFERENCES estoque (id_estoque),
-    FOREIGN KEY (id_remedio) REFERENCES remedio (id_remedio)
-);
+-- Tabela Relacional entre Estoque e Remédio
+INSERT INTO possui (id_estoque, id_remedio) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
 -- Tabela Cliente
-CREATE TABLE cliente (
-    id_cliente SERIAL PRIMARY KEY,
-    nome_cliente VARCHAR(255) NOT NULL,
-    cpf VARCHAR(11) CHECK (length(cpf) = 11) NOT NULL UNIQUE,
-    endereco_rua VARCHAR(255),
-    endereco_numero INTEGER,
-    endereco_bairro VARCHAR(255),
-    endereco_cidade VARCHAR(255)
-);
+INSERT INTO cliente (nome_cliente, cpf, endereco_rua, endereco_numero, endereco_bairro, endereco_cidade) VALUES
+('José Almeida', '12345678901', 'Rua A', 101, 'Centro', 'São Paulo'),
+('Mariana Costa', '98765432101', 'Rua B', 102, 'Centro', 'Rio de Janeiro'),
+('Carlos Pereira', '45678912301', 'Rua C', 103, 'Centro', 'Belo Horizonte'),
+('Ana Lima', '78912345601', 'Rua D', 104, 'Centro', 'Curitiba'),
+('Lucas Ferreira', '32165498701', 'Rua E', 105, 'Centro', 'Porto Alegre'),
+('Juliana Souza', '65498732101', 'Rua F', 106, 'Centro', 'Salvador'),
+('Fernando Oliveira', '98732165401', 'Rua G', 107, 'Centro', 'Fortaleza'),
+('Patrícia Mendes', '65432178901', 'Rua H', 108, 'Centro', 'Recife'),
+('Rodrigo Cardoso', '12378945601', 'Rua I', 109, 'Centro', 'Manaus'),
+('Amanda Silva', '78965412301', 'Rua J', 110, 'Centro', 'Brasília');
 
 -- Tabela Telefone
-CREATE TABLE telefone (
-    id_telefone SERIAL PRIMARY KEY,
-    id_cliente INTEGER NOT NULL,
-    numero_telefone VARCHAR(20),
-    FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente)
-);
+INSERT INTO telefone (id_cliente, numero_telefone) VALUES
+(1, '11987654321'),
+(2, '21987654321'),
+(3, '31987654321'),
+(4, '41987654321'),
+(5, '51987654321'),
+(6, '61987654321'),
+(7, '71987654321'),
+(8, '81987654321'),
+(9, '91987654321'),
+(10, '11987654322');
 
 -- Tabela Histórico de Compra
-CREATE TABLE historico_compra (
-    id_historico SERIAL PRIMARY KEY,
-    receitas VARCHAR(255),
-    ult_compra VARCHAR(255),
-    id_cliente INTEGER NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente)
-);
-
--- Relacionamento Histórico de Compra e Remédio
-CREATE TABLE faz_parte (
-    id_historico INTEGER NOT NULL,
-    id_remedio INTEGER NOT NULL,
-    PRIMARY KEY (id_historico, id_remedio),
-    FOREIGN KEY (id_historico) REFERENCES historico_compra (id_historico),
-    FOREIGN KEY (id_remedio) REFERENCES remedio (id_remedio)
-);
-
-
--- Populando a tabela remedio
-INSERT INTO remedio (nome, descricao, tipo_remedio, cores_tarjas) VALUES
-('Paracetamol', 'Analgésico e antipirético', 'Genérico', 'Branca'),
-('Amoxicilina', 'Antibiótico de largo espectro', 'Genérico', 'Branca'),
-('Dorflex', 'Analgésico e relaxante muscular', 'De Marca', 'Vermelha'),
-('Cataflam', 'Anti-inflamatório', 'De Marca', 'Vermelha'),
-('Ibuprofeno', 'Antiinflamatório não esteroidal', 'Genérico', 'Vermelha'),
-('Tylenol', 'Analgésico e antipirético', 'De Marca', 'Branca'),
-('Losartana', 'Anti-hipertensivo', 'Genérico', 'Branca'),
-('Pantoprazol', 'Inibidor da bomba de prótons', 'Genérico', 'Amarela'),
-('Omeprazol', 'Inibidor da bomba de prótons', 'De Marca', 'Amarela'),
-('Aspirina', 'Analgésico e antipirético', 'De Marca', 'Vermelha');
-
--- Populando a tabela pedido
-INSERT INTO pedido (cod_rastr, status_pedido, data_pedido, qtd_rem_solic) VALUES
-('BR1234567890', 'ENTREGUE', '2024-01-15', 100),
-('BR0987654321', 'A CAMINHO', '2024-02-20', 200),
-('BR1122334455', 'EM PRODUÇÃO', '2024-03-10', 150),
-('BR5544332211', 'ENTREGUE', '2024-04-05', 300),
-('BR6677889900', 'A CAMINHO', '2024-05-12', 50),
-('BR7766554433', 'ENTREGUE', '2024-06-18', 500),
-('BR8877665544', 'EM PRODUÇÃO', '2024-07-25', 250),
-('BR9988776655', 'A CAMINHO', '2024-08-02', 120),
-('BR1112223334', 'ENTREGUE', '2024-08-10', 400),
-('BR4445556667', 'EM PRODUÇÃO', '2024-08-16', 180);
-
--- Populando a tabela fornecedor
-INSERT INTO fornecedor (nome_empresa, cnpj, email, endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado) VALUES
-('Farmaco Ltda', '12345678000195', 'contato@farmaco.com', 'Rua A', 100, 'Centro', 'São Paulo', 'SP'),
-('Medicinal SA', '98765432000112', 'vendas@medicinal.com', 'Rua B', 200, 'Vila Nova', 'Rio de Janeiro', 'RJ'),
-('Saude Total', '19283746000129', 'comercial@saudetotal.com', 'Rua C', 300, 'Jardim', 'Belo Horizonte', 'MG'),
-('Remedios Brasil', '56473829000145', 'suporte@remediosbrasil.com', 'Rua D', 400, 'Piedade', 'Recife', 'PE'),
-('Farmaceutica Alfa', '67584932000167', 'info@alfa.com', 'Rua E', 500, 'Centro', 'Curitiba', 'PR'),
-('BioSaude', '78945612000188', 'contato@biosaude.com', 'Rua F', 600, 'Bonsucesso', 'Salvador', 'BA'),
-('BemEstar', '31415926000109', 'vendas@bemestar.com', 'Rua G', 700, 'Paulista', 'Fortaleza', 'CE'),
-('PharmaLife', '11223344000123', 'comercial@pharmalife.com', 'Rua H', 800, 'Santana', 'Porto Alegre', 'RS'),
-('VitalMedic', '99887766000114', 'suporte@vitalmedic.com', 'Rua I', 900, 'Copacabana', 'Rio de Janeiro', 'RJ'),
-('Saude Forte', '55667788000136', 'info@saudeforte.com', 'Rua J', 1000, 'Leblon', 'São Paulo', 'SP');
-
--- Populando a tabela funcionario
-INSERT INTO funcionario (nome, cargo, salario) VALUES
-('João Silva', 'Farmacêutico', 3500.00),
-('Maria Oliveira', 'Atendente', 2000.00),
-('Carlos Santos', 'Gerente', 4500.00),
-('Ana Paula', 'Caixa', 1800.00),
-('Pedro Lima', 'Auxiliar de Farmácia', 2200.00),
-('Mariana Souza', 'Farmacêutica', 3600.00),
-('Lucas Ferreira', 'Estoquista', 2400.00),
-('Juliana Almeida', 'Vendedora', 2500.00),
-('Rafael Costa', 'Atendente', 2100.00),
-('Fernanda Silva', 'Caixa', 1850.00);
-
--- Populando a tabela estoque
-INSERT INTO estoque (data_entrega_stq, qtd_stq, data_vali_stq, unidade_medida) VALUES
-('2024-01-10', 1000, '2024-12-31', 'Caixas'),
-('2024-02-15', 800, '2024-11-30', 'Frascos'),
-('2024-03-20', 600, '2024-10-31', 'Caixas'),
-('2024-04-25', 1200, '2024-09-30', 'Unidades'),
-('2024-05-30', 900, '2024-08-31', 'Cartelas'),
-('2024-06-05', 500, '2024-07-31', 'Frascos'),
-('2024-07-10', 400, '2024-06-30', 'Caixas'),
-('2024-08-15', 1100, '2024-05-31', 'Unidades'),
-('2024-09-20', 1300, '2024-04-30', 'Cartelas'),
-('2024-10-25', 1400, '2024-03-31', 'Frascos');
-
--- Populando a tabela cliente
-INSERT INTO cliente (nome_cliente, cpf, endereco_rua, endereco_numero, endereco_bairro, endereco_cidade) VALUES
-('Luiz Carvalho', '12345678901', 'Av. Paulista', 1000, 'Bela Vista', 'São Paulo'),
-('Roberta Lima', '98765432109', 'Rua das Flores', 200, 'Jardim Botânico', 'Rio de Janeiro'),
-('Fernanda Pereira', '45678912301', 'Av. dos Andradas', 300, 'Centro', 'Belo Horizonte'),
-('Gabriel Souza', '65432198701', 'Rua 15 de Novembro', 400, 'Centro', 'Curitiba'),
-('Mariana Oliveira', '78912345601', 'Av. Paralela', 500, 'Imbuí', 'Salvador'),
-('Paulo Henrique', '32165498701', 'Rua Marechal Deodoro', 600, 'Centro', 'Porto Alegre'),
-('Juliana Santos', '15975325801', 'Av. Beira Mar', 700, 'Centro', 'Recife'),
-('Ricardo Alves', '25815975301', 'Rua do Lazer', 800, 'Ponta Verde', 'Maceió'),
-('Ana Clara', '75315925801', 'Av. Brasil', 900, 'Copacabana', 'Rio de Janeiro'),
-('Lucas Menezes', '98732165401', 'Rua da Paz', 1000, 'Centro', 'Fortaleza');
-
--- Populando a tabela telefone
-INSERT INTO telefone (id_cliente, numero_telefone) VALUES
-(1, '(11) 91234-5678'),
-(2, '(21) 99876-5432'),
-(3, '(31) 98765-4321'),
-(4, '(41) 97654-3210'),
-(5, '(71) 96543-2109'),
-(6, '(51) 95432-1098'),
-(7, '(81) 94321-0987'),
-(8, '(82) 93210-9876'),
-(9, '(21) 92109-8765'),
-(10, '(85) 91098-7654');
-
--- Populando a tabela historico_compra
 INSERT INTO historico_compra (receitas, ult_compra, id_cliente) VALUES
-('Receita A', '2024-01-10', 1),
-('Receita B', '2024-02-15', 2),
-('Receita C', '2024-03-20', 3),
-('Receita D', '2024-04-25', 4),
-('Receita E', '2024-05-30', 5),
-('Receita F', '2024-06-05', 6),
-('Receita G', '2024-07-10', 7),
-('Receita H', '2024-08-15', 8),
-('Receita I', '2024-09-20', 9),
-('Receita J', '2024-10-25', 10);
+('Receita para Paracetamol', '2024-08-10', 1),
+('Receita para Ibuprofeno', '2024-08-11', 2),
+('Receita para Amoxicilina', '2024-08-12', 3),
+('Receita para Dipirona', '2024-08-13', 4),
+('Receita para Loratadina', '2024-08-14', 5),
+('Receita para Omeprazol', '2024-08-15', 6),
+('Receita para Simeticona', '2024-08-16', 7),
+('Receita para Clonazepam', '2024-08-17', 8),
+('Receita para Metformina', '2024-08-18', 9),
+('Receita para Losartana', '2024-08-19', 10);
+
+-- Tabela Relacional entre Histórico de Compra e Remédio
+INSERT INTO faz_parte (id_historico, id_remedio) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- Tabela Relacional entre Histórico de Compra e Cliente
+INSERT INTO tem (id_historico, id_cliente) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
